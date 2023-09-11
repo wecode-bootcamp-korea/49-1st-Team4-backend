@@ -5,13 +5,13 @@ const signUp = async (req, res) => {
   // is not-null valus exist
   const { email, password, nickname, phoneNumber, birthday, profileImage } =
     req.body;
-  userService.isNotEmpty(email, password, nickname);
+  userService.checkEmptyValues(email, password, nickname);
 
   // is email format correct
-  userService.isEmailValid(email);
+  userService.checkEmailValidity(email);
 
   // is password format correct
-  userService.isPasswordValid(password);
+  userService.checkPasswordValidity(password);
 
   // is email not exist on db
   
