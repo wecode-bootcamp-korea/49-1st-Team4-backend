@@ -1,3 +1,6 @@
+const bcrypt = require('bcrypt');
+const userDao = require('../models/user.dao');
+
 const signUp = async (req, res) => {
   // req body validation
   // is not-null valus exist
@@ -15,8 +18,8 @@ const signUp = async (req, res) => {
   userService.checkDuplicateEmail(email);
 
   // password hashing
-
+  const hashedPassword = await bcrypt.hash();
   // db save
+  userDao.createUser();
 
-  // response
 };
