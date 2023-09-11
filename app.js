@@ -3,15 +3,17 @@ const express = require('express');
 const dotenv = require("dotenv");
 const cors = require('cors');
 const morgan = require('morgan');
-const { routes } = require('./routes');
 dotenv.config();
+
 const { AppDataSource } = require("./models/data-source");
+const { routes } = require('./routes');
+
 const app = express();
 
 app.use(cors());
 app.use(express.json()); // for parsing application/json
 app.use(morgan("combined"));
-// app.use(routes);
+app.use(routes);
 
 app.get("/", async (req, res) => {
   try {
