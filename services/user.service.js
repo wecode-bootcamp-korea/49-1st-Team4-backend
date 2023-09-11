@@ -24,7 +24,11 @@ const signUp = async (body) => {
     const hasNumber = /[\d]/;
     const hasWord = /[\w]/;
     const hasSpecial = new RegExp("[.@!#$%&'*+-/=?^_`{|}~]");
-    if (!hasNumber.test(password) || !hasWord.test(password) || !hasSpecial.test(password)) {
+    if (
+      !hasNumber.test(password) ||
+      !hasWord.test(password) ||
+      !hasSpecial.test(password)
+    ) {
       throwError(400, "INVALID_PASSWORD");
     }
   };
@@ -32,14 +36,14 @@ const signUp = async (body) => {
 
   const checkDuplicateEmail = async (email) => {
     const user = await userDao.getUserByEmail(email);
-    if (user.email) {
+    if (user) {
       throwError(400, "DUPLICATE_USER_EMAIL");
     }
   };
   await checkDuplicateEmail(email);
 
   const hashedPassword = await bcrypt.hash(password, saltRounds);
-  
+
   const createUserDto = (
     email,
     hashedPassword,
