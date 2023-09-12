@@ -8,14 +8,14 @@ const createComment = async (body) => {
   const { thread_id, user_id } = body;
   const user = await commentDao.checkUserById(user_id);
   if (!user) {
-    throwError(400, "USER_NOT_FOUND");
+    throwError(401, "USER_NOT_FOUND");
   }
 
   const thread = await commentDao.checkThreadById(thread_id);
 
   //thread_does_not_exist
   if (!thread) {
-    throwError(400, "CONTENT_NOT_FOUND");
+    throwError(401, "CONTENT_NOT_FOUND");
   }
 
   commentDao.createComments(body);

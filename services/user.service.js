@@ -1,5 +1,5 @@
-// const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const userDao = require("../models/user.dao");
 const { throwError } = require("../utils/throwError");
 const { checkEmptyValues } = require("../utils/checkEmptyValues");
@@ -23,15 +23,12 @@ const signIn = async (body) => {
     throwError(401, "INCORRECT_PASSWORD");
   }
 
-  // const token = jwt.sign({ id: user.id }, process.env.SECRET);
-  // const decoded = jwt.verify(token, process.env.SECRET);
-  // console.log(decoded);
+  const token = jwt.sign({ email: email }, process.env.SECRET);
+  const decoded = jwt.verify(token, process.env.SECRET);
+  console.log(decoded);
 
-  // return token;
+  return token;
 };
-
-
-
 
 const saltRounds = 10;
 
@@ -50,7 +47,7 @@ const validatePassword = (password) => {
   if (
     !hasNumber.test(password) ||
     !hasWord.test(password) ||
-    !hasSpecial.test(password) || 
+    !hasSpecial.test(password) ||
     password.length < 8
   ) {
     throwError(400, "INVALID_PASSWORD");
@@ -90,33 +87,32 @@ const createUserDto = (
 };
 
 const signUp = async (body) => {
-    const { email, password, nickname, phoneNumber, birthday, profileImage } =
+  const { email, password, nickname, phoneNumber, birthday, profileImage } =
     body;
-    
-    checkEmptyValues(email, password, nickname);
-    
-    validateEmail(email);
-    
-    validatePassword(password);
-    
-    await checkDuplicateEmail(email);
-    
 
-    const hashedPassword = password; // TODO: login에서 암호화 처리 되면 아래 줄로 변경
-    // const hashedPassword = await bcrypt.hash(password, saltRounds);
-    
-    let newUser = createUserDto(
-      email,
-      hashedPassword,
-      nickname,
-      phoneNumber,
-      birthday,
-      profileImage
-    );
-    userDao.createUser(newUser);
+  checkEmptyValues(email, password, nickname);
+
+  validateEmail(email);
+
+  validatePassword(password);
+
+  await checkDuplicateEmail(email);
+
+  const hashedPassword = password; // TODO: login에서 암호화 처리 되면 아래 줄로 변경
+  // const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+  let newUser = createUserDto(
+    email,
+    hashedPassword,
+    nickname,
+    phoneNumber,
+    birthday,
+    profileImage
+  );
+  userDao.createUser(newUser);
 };
 
 module.exports = {
   signUp,
-  signIn
+  signIn,
 };
