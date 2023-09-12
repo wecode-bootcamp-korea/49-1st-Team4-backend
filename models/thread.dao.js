@@ -8,7 +8,8 @@ const getAllThreads = async () => {
     threads.created_at, 
     threads.updated_at
     FROM users, threads
-    WHERE users.id = threads.user_id;
+    WHERE users.id = threads.user_id
+    ORDER BY created_at ASC;
     `);
   return threads;
 };
