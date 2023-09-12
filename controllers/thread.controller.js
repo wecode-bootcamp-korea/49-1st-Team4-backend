@@ -25,7 +25,18 @@ const threadCheck = async (req, res) => {
   }
 };
 
+const threadPost = async (req, res) => {
+  try {
+    await threadService.threadPost(req.body);
+    res.status(200).json({ message: "threadPost_success" });
+  } catch (error) {
+    console.log("error", error);
+    res.status(error.status).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getThread,
   threadCheck,
+  threadPost,
 };
