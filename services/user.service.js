@@ -87,11 +87,4 @@ const signUp = async (body) => {
 module.exports = {
   signUp,
 };
-let newUser = createUserDto(
-  email,
-  hashedPassword,
-  nickname,
-  phoneNumber,
-  birthday,
-  profileImage
-);
+
