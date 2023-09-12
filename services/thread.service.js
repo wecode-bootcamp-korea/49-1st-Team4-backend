@@ -19,10 +19,14 @@ const getThread = async (threadId, reqUserId) => {
     throwError(404, "CONTENT_NOT_FOUND");
   }
 
-  for (let thread in threads) {
+  for (let i = 0; i < threads.length; i ++) {
+    let thread = threads[i];
     thread.isMyPost = thread.isMyPost == 1 ? true : false;
-    for (let comment in thread.comments) {
+    thread.createdAt = new Date(thread.createdAt).toISOString();
+    for (let j = 0; j < thread.comments.length; j ++) {
+        let comment = thread.comments[j];
         comment.isMyReply = comment.isMyReply == 1 ? true : false;
+        comment.createdAt = new Date(comment.createdAt).toISOString();
     }
   }
   return threads;
