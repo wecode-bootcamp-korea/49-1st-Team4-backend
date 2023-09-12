@@ -1,7 +1,7 @@
 const { AppDataSource } = require("../models/data-source");
 
 const getAllThreads = async () => {
-  const [thread] = await AppDataSource.query(`
+  const threads = await AppDataSource.query(`
     SELECT 
     users.nickname, 
     threads.content, 
@@ -10,7 +10,7 @@ const getAllThreads = async () => {
     FROM users, threads
     WHERE users.id = threads.user_id;
     `);
-  return thread;
+  return threads;
 };
 
 const createThread = async (tread) => {
