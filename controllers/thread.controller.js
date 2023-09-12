@@ -5,7 +5,7 @@ const threadCheck = async (req, res) => {
   try {
     await threadService.threadCheck(req.body);
     res.status(200).json({ message: "threadCheck_success" });
-  } catch {
+  } catch (error) {
     console.log("error", error);
     res.status(error.status).json({ message: error.message });
   }
