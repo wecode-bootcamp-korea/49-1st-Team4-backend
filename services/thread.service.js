@@ -7,10 +7,7 @@ const threadCheck = async (body) => {
   //DB 소스 변수를 가져오고
   // const { user_id, content } = req.body;
   const threads = await threadDao.getAllThreads();
-  console.log(threads);
-  if (!threads) {
-    throwError(400, "NO_CONTENT");
-  }
+
   //프론트에 전달
   return threads;
 };
