@@ -1,6 +1,5 @@
-const threadDao = require("../models/threads.dao");
+const threadDao = require("../models/thread.dao");
 const { throwError } = require("../utils/throwError");
-const { checkEmptyValues } = require("../utils/checkEmptyValues");
 
 const getThread = async (threadId, reqUserId) => {
   // validate id
