@@ -15,10 +15,14 @@ const getAllThreads = async () => {
 
 const createThread = async (tread) => {
   await AppDataSource.query(`
-    INSERT INTO threads
-    (user_id, content)
-    VALUES
-    (${tread.user_id}, ${tread.content});
+    INSERT INTO threads(
+      user_id, 
+      content
+      )
+    VALUES(
+      '${tread.user_id}',
+      '${tread.content}'
+    )
     `);
 };
 

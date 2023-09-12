@@ -1,5 +1,5 @@
 const { AppDataSource } = require("../models/data-source");
-const threadDao = require("../models/threads.dao");
+const threadDao = require("../models/thread.dao");
 const { throwError } = require("../utils/throwError");
 const { checkEmptyValues } = require("../utils/checkEmptyValues");
 
@@ -16,9 +16,9 @@ const threadPost = async (body) => {
   // if (!token) {
   //   throwError(400,"LOGIN_ERROR")
   // }
-  if (!content) {
-    throwError(400, "INPUT_CONTENT_EMPTY");
-  }
+  // if (!content) {
+  //   throwError(400, "INPUT_CONTENT_EMPTY");
+  // }
   let newThread = {
     user_id: id,
     content: content,
