@@ -1,11 +1,16 @@
 const http = require("http");
 const express = require("express");
 const dotenv = require("dotenv");
+
 const cors = require("cors");
 const morgan = require("morgan");
+
 dotenv.config();
+
 const { AppDataSource } = require("./models/data-source");
+
 const { routes } = require("./routes");
+
 const app = express();
 
 app.use(cors());
