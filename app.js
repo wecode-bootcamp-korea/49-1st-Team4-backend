@@ -16,6 +16,7 @@ const app = express();
 app.use(cors());
 app.use(express.json()); // for parsing application/json
 app.use(morgan("combined"));
+
 app.use(routes);
 
 app.get("/", async (req, res) => {

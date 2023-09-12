@@ -74,20 +74,20 @@ const createUserDto = (
     nickname: nickname,
     password: hashedPassword,
   };
-  if (phoneNumber) {
+  if (phoneNumber && phoneNumber !== "") {
     if (!/^(\d){11,12}/.test(phoneNumber)) {
         throwError(400, "INVALID_INPUT");
     }
     newUser["phone_number"] = phoneNumber;
   }
-  if (birthday) {
+  if (birthday && birthday !== "") {
     const birthdayDate = new Date(birthday);
     if (isNaN(birthdayDate.getTime())) {
       throwError(400, "INVALID_INPUT");
     }
     newUser["birthday"] = birthday;
   }
-  if (profileImage) {
+  if (profileImage && profileImage !== "") {
     newUser["profile_image"] = profileImage;
   }
   return newUser;

@@ -1,4 +1,3 @@
-const { throwError } = require("../utils/throwError");
 const userService = require("../services/user.service");
 
 const signIn = async (req, res) => {
