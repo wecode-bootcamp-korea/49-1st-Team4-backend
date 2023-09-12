@@ -9,7 +9,7 @@ const signIn = async (req, res) => {
     console.log("error", error);
     res.status(error.status).json({ message: error.message });
   }
-
+};
 
 const signUp = async (req, res) => {
   try {
@@ -17,11 +17,11 @@ const signUp = async (req, res) => {
     res.status(201).json({ message: "userCreated" });
   } catch (error) {
     console.log("error", error);
-    res.status(error.status).json({message: error.message});
+    res.status(error.status).json({ message: error.message });
   }
 };
 
 module.exports = {
   signUp,
-  signIn
+  signIn,
 };
