@@ -1,25 +1,32 @@
-const bcrypt = require('bcrypt');
-const userDao = require('../models/user.dao');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const userDao = require("../models/user.dao");
+const { throwError } = require("../utils/throwError");
 
-const signUp = async (req, res) => {
-  // req body validation
-  // is not-null valus exist
-  const { email, password, nickname, phoneNumber, birthday, profileImage } =
-    req.body;
-  userService.checkEmptyValues(email, password, nickname);
+const signIn = async (body) => {
+  const { email, password } = body;
+  const user = await userDao.getUserByEmail(email);
+  //KEY_ERROR
+  if (!email || !password) {
+    throwError(400, "KEY_ERROR");
+  }
 
-  // is email format correct
-  userService.checkEmailValidity(email);
+  //email_does_not_exist
+  if (!user) {
+    throwError(401, "EMAIL_DOES_NOT_EXIST");
+  }
+  //INCORRECT_PASSWORD
+  // const result = await bcrypt.compare(password, user.password);
+  console.log(user.password);
+  if (user.password != password) {
+    throwError(401, "INCORRECT_PASSWORD");
+  }
 
-  // is password format correct
-  userService.checkPasswordValidity(password);
+  // const token = jwt.sign({ id: user.id }, process.env.SECRET);
+  // const decoded = jwt.verify(token, process.env.SECRET);
+  // console.log(decoded);
 
-  // is email not exist on db
-  userService.checkDuplicateEmail(email);
-
-  // password hashing
-  const hashedPassword = await bcrypt.hash();
-  // db save
-  userDao.createUser();
-
+  // return token;
 };
+
+module.exports = { signIn };
