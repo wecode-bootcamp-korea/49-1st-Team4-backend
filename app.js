@@ -30,12 +30,6 @@ app.get("/ping", async (req, res) => {
   return res.status(200).json({ message: "pong" });
 });
 
-// app.post("/signIn", async (req, res) => {
-//   return res.status(200).json({ "token:": token, message: "pong" });
-// });
-
-app.post("/signIn", routes);
-
 const server = http.createServer(app); // express app 으로 서버를 만듭니다.
 
 const start = async () => {
