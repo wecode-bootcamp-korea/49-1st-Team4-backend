@@ -30,9 +30,6 @@ const signIn = async (body) => {
   // return token;
 };
 
-
-
-
 const saltRounds = 10;
 
 const validateEmail = (email) => {
@@ -50,7 +47,7 @@ const validatePassword = (password) => {
   if (
     !hasNumber.test(password) ||
     !hasWord.test(password) ||
-    !hasSpecial.test(password) || 
+    !hasSpecial.test(password) ||
     password.length < 8
   ) {
     throwError(400, "INVALID_PASSWORD");
@@ -78,9 +75,16 @@ const createUserDto = (
     password: hashedPassword,
   };
   if (phoneNumber) {
+    if (!/^(\d){11,12}/.test(phoneNumber)) {
+        throwError(400, "INVALID_INPUT");
+    }
     newUser["phone_number"] = phoneNumber;
   }
   if (birthday) {
+    const birthdayDate = new Date(birthday);
+    if (isNaN(birthdayDate.getTime())) {
+      throwError(400, "INVALID_INPUT");
+    }
     newUser["birthday"] = birthday;
   }
   if (profileImage) {
@@ -90,33 +94,32 @@ const createUserDto = (
 };
 
 const signUp = async (body) => {
-    const { email, password, nickname, phoneNumber, birthday, profileImage } =
+  const { email, password, nickname, phoneNumber, birthday, profileImage } =
     body;
-    
-    checkEmptyValues(email, password, nickname);
-    
-    validateEmail(email);
-    
-    validatePassword(password);
-    
-    await checkDuplicateEmail(email);
-    
 
-    const hashedPassword = password; // TODO: login에서 암호화 처리 되면 아래 줄로 변경
-    // const hashedPassword = await bcrypt.hash(password, saltRounds);
-    
-    let newUser = createUserDto(
-      email,
-      hashedPassword,
-      nickname,
-      phoneNumber,
-      birthday,
-      profileImage
-    );
-    userDao.createUser(newUser);
+  checkEmptyValues(email, password, nickname);
+
+  validateEmail(email);
+
+  validatePassword(password);
+
+  await checkDuplicateEmail(email);
+
+  const hashedPassword = password; // TODO: login에서 암호화 처리 되면 아래 줄로 변경
+  // const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+  let newUser = createUserDto(
+    email,
+    hashedPassword,
+    nickname,
+    phoneNumber,
+    birthday,
+    profileImage
+  );
+  await userDao.createUser(newUser);
 };
 
 module.exports = {
   signUp,
-  signIn
+  signIn,
 };
