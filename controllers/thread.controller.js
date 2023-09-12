@@ -10,3 +10,7 @@ const threadCheck = async (req, res) => {
     res.status(error.status).json({ message: error.message });
   }
 };
+
+module.exports = {
+  threadCheck,
+};
