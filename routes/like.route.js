@@ -3,9 +3,9 @@ const likeController = require("../controllers/like.controller");
 
 const likeRouter = express.Router();
 
-likeRouter.post("/:threadId", likeController.likeThread);
+likeRouter.post("/:threadId", likeController.createThreadLike);
 likeRouter.delete("/:threadId", likeController.deleteThreadLike);
 
 module.exports = {
-    likeRouter,
+  likeRouter,
 };

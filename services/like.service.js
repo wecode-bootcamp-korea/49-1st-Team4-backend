@@ -1,8 +1,8 @@
-const threadLikeDao = require('../models/threadLike.dao');
-const threadDao = require('../models/thread.dao');
-const { throwError } = require('../utils/throwError');
+const threadLikeDao = require("../models/threadLike.dao");
+const threadDao = require("../models/thread.dao");
+const { throwError } = require("../utils/throwError");
 
-const likeThread = async (threadId, userId) => {
+const createThreadLike = async (threadId, userId) => {
   // validate post
   if (!threadId) {
     throwError(400, "KEY_ERROR");
@@ -52,6 +52,6 @@ const deleteThreadLike = async (threadId, userId) => {
 };
 
 module.exports = {
-  likeThread,
+  createThreadLike,
   deleteThreadLike,
 };

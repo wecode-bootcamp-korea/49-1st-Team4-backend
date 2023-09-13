@@ -1,10 +1,10 @@
-const likeService = require('../services/like.service');
+const likeService = require("../services/like.service");
 
-const likeThread = async (req, res) => {
+const createThreadLike = async (req, res) => {
   try {
     const threadId = req.params.threadId;
     const userId = 4; // req.verifiedUeser.id;
-    await likeService.likeThread(threadId, userId);
+    await likeService.createThreadLike(threadId, userId);
     res.status(201).json({ message: "success" });
   } catch (error) {
     console.log("error", error);
@@ -25,6 +25,6 @@ const deleteThreadLike = async (req, res) => {
 };
 
 module.exports = {
-    likeThread,
-    deleteThreadLike,
-}
+  createThreadLike,
+  deleteThreadLike,
+};
