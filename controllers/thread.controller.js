@@ -1,10 +1,9 @@
 const { threadService } = require("../services");
-const { throwError } = require("../utils/throwError");
 
 const getThreadById = async (req, res) => {
   try {
     const threadId = req.params.id;
-    const reqUserId = 4; // req.verifiedUser.id;
+    const reqUserId = req.body.userId;
     const data = await threadService.getThreadById(threadId, reqUserId);
     res.status(200).json({ data: data });
   } catch (error) {

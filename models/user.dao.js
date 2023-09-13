@@ -1,4 +1,3 @@
-const { application } = require("express");
 const { AppDataSource } = require("./data-source");
 
 const createUser = async (user) => {

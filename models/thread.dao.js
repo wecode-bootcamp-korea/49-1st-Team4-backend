@@ -21,12 +21,12 @@ const createThread = async (tread) => {
       content
       )
     VALUES(
-      '${tread.user_id}',
+      '${tread.userId}',
       '${tread.content}'
     )
     `);
 };
-// 지수님 짱
+
 const getThreadById = async (threadId, reqUserId) => {
   const threads = await AppDataSource.query(`
   SELECT
