@@ -123,9 +123,7 @@ const signUp = async (body) => {
 const findUser = async (user_id) => {
   const user_list = await userDao.findUser(user_id);
   if (user_list.length == 0) {
-    return false;
-  } else {
-    return true;
+    throwError(404, "USER_NOT_FOUND");
   }
 };
 
