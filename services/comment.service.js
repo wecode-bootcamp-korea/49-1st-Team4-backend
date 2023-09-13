@@ -2,8 +2,8 @@ const { commentDao } = require("../models");
 const { throwError } = require("../utils/throwError");
 
 const createComment = async (body) => {
-  const { thread_id, user_id } = body;
-  const user = await commentDao.checkUserById(user_id);
+  const { userId, thread_id } = body;
+  const user = await commentDao.checkUserById(userId);
   if (!user) {
     throwError(401, "USER_NOT_FOUND");
   }
