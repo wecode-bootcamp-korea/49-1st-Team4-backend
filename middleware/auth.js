@@ -1,6 +1,6 @@
-import { throwError } from "../utils/throwError";
-import { UserService } from "../services/user.service";
-import jwt from "jsonwebtoken";
+const { throwError } = require("../utils/throwError");
+const { UserService } = require("../services/user.service");
+const jwt = require("jsonwebtoken");
 
 const { AUTH_TOKEN_SALT } = process.env;
 
@@ -22,4 +22,4 @@ const validateToken = async (req, res, next) => {
   }
 };
 
-export default validateToken;
+module.exports = { validateToken };
