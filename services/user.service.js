@@ -120,7 +120,17 @@ const signUp = async (body) => {
   await userDao.createUser(newUser);
 };
 
+const findUser = async (user_id) => {
+  const user_list = await userDao.findUser(user_id);
+  if (user_list.length == 0) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
 module.exports = {
   signUp,
   signIn,
+  findUser,
 };
