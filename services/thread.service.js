@@ -39,41 +39,41 @@ const getThreads = async (body) => {
 };
 
 const createThread = async (body) => {
-  const { id, content } = body; //token 에서 값 알아와서 변수에 입력
-  // if (!token) {
-  //   throwError(400,"LOGIN_ERROR")
-  // }
-  // if (!content) {
-  //   throwError(400, "INPUT_CONTENT_EMPTY");
-  // }
+  const { userId, content } = body; //token 에서 값 알아와서 변수에 입력
+  if (!userId) {
+    throwError(400,"LOGIN_ERROR")
+  }
+  if (!content) {
+    throwError(400, "INPUT_CONTENT_EMPTY");
+  }
   let newThread = {
-    user_id: id,
+    userId: userId,
     content: content,
   };
   await threadDao.createThread(newThread);
 };
 
 const updateThread = async (body) => {
-  const { user_id, content, thread_id } = body;
+  const { userId, content, postId } = body;
   //예외. content의 내용이 공란이 아니어야한다.
   if (!content) {
     throwError(400, "CONTENT_EMPTY");
   }
-  const thread = threadDao.getThreadById(thread_id, user_id);
+  const thread = threadDao.getThreadById(postId, userId);
   //예외. 본인이 작성한 스레드가 아니면 수정 불가능
   if (thread.isMyPost) {
     throwError(400, "NO_PERMISSION_USER");
   }
-  await threadDao.updateTread(thread_id, content);
+  await threadDao.updateTread(postId, content);
 };
 
 const deleteThread = async (body) => {
-  const { thread_id, user_id } = body;
-  const thread = threadDao.getThreadById(thread_id, user_id);
+  const { postId, userId } = body;
+  const thread = threadDao.getThreadById(postId, userId);
   if (thread.length == 0) {
     throwError(400, "NON_EXISTENT_THREAD");
   }
-  await threadDao.deleteTreads(thread_id);
+  await threadDao.deleteTreads(postId);
 };
 module.exports = {
   getThreadById,

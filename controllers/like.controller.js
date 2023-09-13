@@ -3,7 +3,7 @@ const likeService = require("../services/like.service");
 const createThreadLike = async (req, res) => {
   try {
     const threadId = req.params.threadId;
-    const userId = 4; // req.verifiedUeser.id;
+    const userId = req.body.userId;
     await likeService.createThreadLike(threadId, userId);
     res.status(201).json({ message: "success" });
   } catch (error) {
@@ -15,7 +15,7 @@ const createThreadLike = async (req, res) => {
 const deleteThreadLike = async (req, res) => {
   try {
     const threadId = req.params.threadId;
-    const userId = 4; // req.verifiedUeser.id;
+    const userId = req.body.userId;
     await likeService.deleteThreadLike(threadId, userId);
     res.status(200).json({ message: "success" });
   } catch (error) {
