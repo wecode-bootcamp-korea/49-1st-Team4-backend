@@ -8,7 +8,7 @@ const createComment = async (body) => {
     throwError(401, "USER_NOT_FOUND");
   }
 
-  const thread = await commentDao.checkThreadById(thread_id);
+  const thread = await commentDao.checkThreadById(threadId);
 
   //thread_does_not_exist
   if (!thread) {
