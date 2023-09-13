@@ -1,5 +1,5 @@
-// const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const userDao = require("../models/user.dao");
 const { throwError } = require("../utils/throwError");
 const { checkEmptyValues } = require("../utils/checkEmptyValues");
@@ -23,11 +23,11 @@ const signIn = async (body) => {
     throwError(401, "INCORRECT_PASSWORD");
   }
 
-  // const token = jwt.sign({ id: user.id }, process.env.SECRET);
-  // const decoded = jwt.verify(token, process.env.SECRET);
-  // console.log(decoded);
+  const token = jwt.sign({ email: email }, process.env.SECRET);
+  const decoded = jwt.verify(token, process.env.SECRET);
+  console.log(decoded);
 
-  // return token;
+  return token;
 };
 
 const saltRounds = 10;
