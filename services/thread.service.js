@@ -1,4 +1,4 @@
-const threadDao = require("../models/thread.dao");
+const { threadDao } = require("../models");
 const { throwError } = require("../utils/throwError");
 
 const getThread = async (threadId, reqUserId) => {

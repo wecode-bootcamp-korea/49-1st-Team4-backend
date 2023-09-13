@@ -1,4 +1,4 @@
-const threadService = require("../services/thread.service");
+const { threadService } = require("../services");
 const { throwError } = require("../utils/throwError");
 
 const getThread = async (req, res) => {
