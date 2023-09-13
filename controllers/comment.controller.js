@@ -1,5 +1,5 @@
 const { throwError } = require("../utils/throwError");
-const { commentServic } = require("../services");
+const { commentService } = require("../services");
 
 const createComment = async (req, res) => {
   try {
