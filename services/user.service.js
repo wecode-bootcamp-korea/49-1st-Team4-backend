@@ -1,5 +1,5 @@
-// const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const userDao = require("../models/user.dao");
 const { throwError } = require("../utils/throwError");
 const { checkEmptyValues } = require("../utils/checkEmptyValues");
@@ -23,11 +23,11 @@ const signIn = async (body) => {
     throwError(401, "INCORRECT_PASSWORD");
   }
 
-  // const token = jwt.sign({ id: user.id }, process.env.SECRET);
-  // const decoded = jwt.verify(token, process.env.SECRET);
-  // console.log(decoded);
+  const token = jwt.sign({ email: email }, process.env.SECRET);
+  const decoded = jwt.verify(token, process.env.SECRET);
+  console.log(decoded);
 
-  // return token;
+  return token;
 };
 
 const saltRounds = 10;
@@ -76,7 +76,7 @@ const createUserDto = (
   };
   if (phoneNumber && phoneNumber !== "") {
     if (!/^(\d){11,12}/.test(phoneNumber)) {
-        throwError(400, "INVALID_INPUT");
+      throwError(400, "INVALID_INPUT");
     }
     newUser["phone_number"] = phoneNumber;
   }
@@ -114,7 +114,8 @@ const signUp = async (body) => {
     nickname,
     phoneNumber,
     birthday,
-    profileImage
+    profileImage //아래 주소를 default로 저장하면 될 것 같습니다.
+    //https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Ffc7a0770-8294-4680-9cb3-c81efe407127%2Fb5f725e6-ab7c-44cc-ad87-1214e26017a9%2FUntitled.jpeg?table=block&id=9589c573-1bbb-48d7-a06b-a0502555d9cd&spaceId=fc7a0770-8294-4680-9cb3-c81efe407127&width=2000&userId=3389c2f0-8e40-4e50-a5a8-1876a4ee6b79&cache=v2
   );
   await userDao.createUser(newUser);
 };

@@ -26,7 +26,7 @@ const createThread = async (tread) => {
     )
     `);
 };
-
+// 지수님 짱
 const getThreadById = async (threadId, reqUserId) => {
   const threads = await AppDataSource.query(`
   SELECT
@@ -61,9 +61,26 @@ const getThreadById = async (threadId, reqUserId) => {
   return threads;
 };
 
+const updateTread = async (thread_id, content) => {
+  await myDataSource.query(`
+    UPDATE posts 
+    SET content = '${content}' 
+    WHERE id = '${thread_id}';
+  `);
+};
+
+const deleteTreads = async (thread_id) => {
+  await myDataSource.query(`
+      DELETE FROM posts 
+      WHERE id = '${thread_id}';
+    `);
+};
+
 module.exports = {
   getAllThreads,
   createThread,
   getThreadById,
   getAllThreads,
+  updateTread,
+  deleteTreads,
 };

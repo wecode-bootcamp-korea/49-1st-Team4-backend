@@ -2,8 +2,8 @@ const userService = require("../services/user.service");
 
 const signIn = async (req, res) => {
   try {
-    await userService.signIn(req.body);
-    res.status(200).json({ message: "success" });
+    const token = await userService.signIn(req.body);
+    res.status(200).json({ message: "LOGIN_SUCCESS", accessToken: token });
   } catch (error) {
     console.log("error", error);
     res.status(error.status).json({ message: error.message });
