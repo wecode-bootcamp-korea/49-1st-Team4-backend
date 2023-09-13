@@ -8,6 +8,4 @@ const routes = express.Router();
 routes.use("/user", userRouter);
 routes.use("/thread", threadRouter);
 
-routes.use("/thread", threadRouter);
-
 module.exports = { routes };

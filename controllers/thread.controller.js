@@ -15,8 +15,11 @@ const getThread = async (req, res) => {
 
 const threadCheck = async (req, res) => {
   try {
-    await threadService.threadCheck(req.body);
-    res.status(200).json({ message: "threadCheck_success" });
+    const thread = await threadService.threadCheck(req.body);
+    res.status(200).json({
+      message: "threadCheck_success",
+      data: thread,
+    });
   } catch (error) {
     console.log("error", error);
     res.status(error.status).json({ message: error.message });

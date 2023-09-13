@@ -55,10 +55,25 @@ const threadPost = async (body) => {
 
 const threadUpdate = async (body) => {
   const { user_id, content, thread_id } = body;
+  //예외. content의 내용이 공란이 아니어야한다.
+  if (!content) {
+    throwError(400, "CONTENT_EMPTY");
+  }
+  const thread = threadDao.getThreadById(thread_id, user_id);
+  //예외. 본인이 작성한 스레드가 아니면 수정 불가능
+  if (thread.isMyPost) {
+    throwError(400, "NO_PERMISSION_USER");
+  }
+  await threadDao.updateTread(thread_id, content);
 };
 
 const threadDelete = async (body) => {
-  const threadUpdate = async;
+  const { thread_id, user_id } = body;
+  const thread = threadDao.getThreadById(thread_id, user_id);
+  if (thread.length == 0) {
+    throwError(400, "NON_EXISTENT_THREAD");
+  }
+  await threadDao.deleteTreads(thread_id);
 };
 module.exports = {
   getThread,
