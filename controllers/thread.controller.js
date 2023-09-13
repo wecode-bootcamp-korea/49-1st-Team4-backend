@@ -1,11 +1,11 @@
 const { threadService } = require("../services");
 const { throwError } = require("../utils/throwError");
 
-const getThread = async (req, res) => {
+const getThreadById = async (req, res) => {
   try {
     const threadId = req.params.id;
     const reqUserId = 4; // req.verifiedUser.id;
-    const data = await threadService.getThread(threadId, reqUserId);
+    const data = await threadService.getThreadById(threadId, reqUserId);
     res.status(200).json({ data: data });
   } catch (error) {
     console.log("error", error);
@@ -13,9 +13,9 @@ const getThread = async (req, res) => {
   }
 };
 
-const threadCheck = async (req, res) => {
+const getThreads = async (req, res) => {
   try {
-    const thread = await threadService.threadCheck(req.body);
+    const thread = await threadService.getThreads(req.body);
     res.status(200).json({
       message: "threadCheck_success",
       data: thread,
@@ -26,9 +26,9 @@ const threadCheck = async (req, res) => {
   }
 };
 
-const threadPost = async (req, res) => {
+const createThread = async (req, res) => {
   try {
-    await threadService.threadPost(req.body);
+    await threadService.createThread(req.body);
     res.status(200).json({ message: "threadPost_success" });
   } catch (error) {
     console.log("error", error);
@@ -36,18 +36,18 @@ const threadPost = async (req, res) => {
   }
 };
 
-const threadUpdate = async (req, res) => {
+const updateThread = async (req, res) => {
   try {
-    await threadService.threadUpdate(req.body);
+    await threadService.updateThread(req.body);
     res.status(200).json({ message: "threadUpdate_success" });
   } catch (error) {
     console.log("error", error);
     res.status(error.status).json({ message: error.message });
   }
 };
-const threadDelete = async (req, res) => {
+const deleteThread = async (req, res) => {
   try {
-    await threadService.threadDelete(req.body);
+    await threadService.deleteThread(req.body);
     res.status(200).json({ message: "threadDelete_success" });
   } catch (error) {
     console.log("error", error);
@@ -56,9 +56,9 @@ const threadDelete = async (req, res) => {
 };
 
 module.exports = {
-  getThread,
-  threadCheck,
-  threadPost,
-  threadUpdate,
-  threadDelete,
+  getThreadById,
+  getThreads,
+  createThread,
+  updateThread,
+  deleteThread,
 };

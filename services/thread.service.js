@@ -1,7 +1,7 @@
 const { threadDao } = require("../models");
 const { throwError } = require("../utils/throwError");
 
-const getThread = async (threadId, reqUserId) => {
+const getThreadById = async (threadId, reqUserId) => {
   // validate id
   if (!threadId) {
     throwError(400, "KEY_ERROR");
@@ -30,7 +30,7 @@ const getThread = async (threadId, reqUserId) => {
   return threads;
 };
 
-const threadCheck = async (body) => {
+const getThreads = async (body) => {
   //DB 소스 변수를 가져오고
 
   const threads = await threadDao.getAllThreads();
@@ -38,7 +38,7 @@ const threadCheck = async (body) => {
   return threads;
 };
 
-const threadPost = async (body) => {
+const createThread = async (body) => {
   const { id, content } = body; //token 에서 값 알아와서 변수에 입력
   // if (!token) {
   //   throwError(400,"LOGIN_ERROR")
@@ -53,7 +53,7 @@ const threadPost = async (body) => {
   await threadDao.createThread(newThread);
 };
 
-const threadUpdate = async (body) => {
+const updateThread = async (body) => {
   const { user_id, content, thread_id } = body;
   //예외. content의 내용이 공란이 아니어야한다.
   if (!content) {
@@ -67,7 +67,7 @@ const threadUpdate = async (body) => {
   await threadDao.updateTread(thread_id, content);
 };
 
-const threadDelete = async (body) => {
+const deleteThread = async (body) => {
   const { thread_id, user_id } = body;
   const thread = threadDao.getThreadById(thread_id, user_id);
   if (thread.length == 0) {
@@ -76,9 +76,9 @@ const threadDelete = async (body) => {
   await threadDao.deleteTreads(thread_id);
 };
 module.exports = {
-  getThread,
-  threadCheck,
-  threadPost,
-  threadUpdate,
-  threadDelete,
+  getThreadById,
+  getThreads,
+  createThread,
+  updateThread,
+  deleteThread,
 };
