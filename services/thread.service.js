@@ -11,25 +11,24 @@ const getThread = async (threadId, reqUserId) => {
   }
 
   // query thread from db
-  const threads = await threadDao.getThreadById(threadId, reqUserId); 
+  const threads = await threadDao.getThreadById(threadId, reqUserId);
   // validate query thread
   if (threads.length === 0) {
     throwError(404, "CONTENT_NOT_FOUND");
   }
 
-  for (let i = 0; i < threads.length; i ++) {
+  for (let i = 0; i < threads.length; i++) {
     let thread = threads[i];
     thread.isMyPost = thread.isMyPost == 1 ? true : false;
     thread.createdAt = new Date(thread.createdAt).toISOString();
-    for (let j = 0; j < thread.comments.length; j ++) {
-        let comment = thread.comments[j];
-        comment.isMyReply = comment.isMyReply == 1 ? true : false;
-        comment.createdAt = new Date(comment.createdAt).toISOString();
+    for (let j = 0; j < thread.comments.length; j++) {
+      let comment = thread.comments[j];
+      comment.isMyReply = comment.isMyReply == 1 ? true : false;
+      comment.createdAt = new Date(comment.createdAt).toISOString();
     }
   }
   return threads;
 };
-
 
 const threadCheck = async (body) => {
   //DB 소스 변수를 가져오고
@@ -54,8 +53,32 @@ const threadPost = async (body) => {
   await threadDao.createThread(newThread);
 };
 
+const threadUpdate = async (body) => {
+  const { user_id, content, thread_id } = body;
+  //예외. content의 내용이 공란이 아니어야한다.
+  if (!content) {
+    throwError(400, "CONTENT_EMPTY");
+  }
+  const thread = threadDao.getThreadById(thread_id, user_id);
+  //예외. 본인이 작성한 스레드가 아니면 수정 불가능
+  if (thread.isMyPost) {
+    throwError(400, "NO_PERMISSION_USER");
+  }
+  await threadDao.updateTread(thread_id, content);
+};
+
+const threadDelete = async (body) => {
+  const { thread_id, user_id } = body;
+  const thread = threadDao.getThreadById(thread_id, user_id);
+  if (thread.length == 0) {
+    throwError(400, "NON_EXISTENT_THREAD");
+  }
+  await threadDao.deleteTreads(thread_id);
+};
 module.exports = {
   getThread,
   threadCheck,
   threadPost,
+  threadUpdate,
+  threadDelete,
 };
