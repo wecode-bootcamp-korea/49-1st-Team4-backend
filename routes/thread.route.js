@@ -1,7 +1,6 @@
 const express = require("express");
-const threadController = require("../controllers/thread.controller");
-const { threadController } = require("../controllers");
 const threadRouter = express.Router();
+const { threadController } = require("../controllers");
 
 threadRouter.get("/check", threadController.threadCheck);
 threadRouter.post("/post", threadController.threadPost);

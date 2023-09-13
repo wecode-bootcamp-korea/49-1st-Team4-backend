@@ -1,4 +1,4 @@
-const commentDao = require("../models/comment.dao");
+const { commentDao } = require("../models");
 const { throwError } = require("../utils/throwError");
 const { checkThreadById } = require("../models/comment.dao");
 const { checkUserById } = require("../models/comment.dao");
