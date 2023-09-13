@@ -114,7 +114,15 @@ const signUp = async (body) => {
   userDao.createUser(newUser);
 };
 
+const findUser = async (user_id) => {
+  const user_list = await userDao.findUser(user_id);
+  if (user_list.length == 0) {
+    throwError(404, "USER_NOT_FOUND");
+  }
+};
+
 module.exports = {
   signUp,
   signIn,
+  findUser,
 };
