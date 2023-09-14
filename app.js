@@ -10,6 +10,7 @@ dotenv.config();
 const { AppDataSource } = require("./src/models/data-source");
 
 const { routes } = require("./src/routes");
+const { validateToken } = require("./src/middleware/auth");
 
 const app = express();
 

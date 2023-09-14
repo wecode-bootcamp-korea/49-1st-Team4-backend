@@ -5,9 +5,8 @@ const { validateToken } = require("../middleware/auth");
 
 const likeRouter = express.Router();
 
-likeRouter.use(validateToken);
-likeRouter.post("/", likeController.createThreadLike);
-likeRouter.delete("/:threadId", likeController.deleteThreadLike);
+likeRouter.post("/", validateToken, likeController.createThreadLike);
+likeRouter.delete("/:threadId", validateToken, likeController.deleteThreadLike);
 
 module.exports = {
   likeRouter,

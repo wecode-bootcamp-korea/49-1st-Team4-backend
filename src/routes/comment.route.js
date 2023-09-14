@@ -5,7 +5,6 @@ const { validateToken } = require("../middleware/auth");
 
 const commentRouter = express.Router();
 
-commentRouter.use(validateToken);
-commentRouter.post("/", commentController.createComment);
+commentRouter.post("/", validateToken, commentController.createComment);
 
 module.exports = { commentRouter };
