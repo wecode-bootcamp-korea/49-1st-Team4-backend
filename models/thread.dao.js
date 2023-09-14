@@ -18,29 +18,33 @@ const getAllThreads = async (userId) => {
     DECLARE input_user_id INTEGER DEFAULT 0;
     ${setUserIdVariable}
     SELECT
-    threads.id AS postId,
-    users.nickname,
-    users.profile_image AS profileImage,
-    IF (input_user_id = 0, false, IF (threads.user_id = input_user_id, true, false)) AS isMyPost,
-    threads.content,
-    is_liked_table.is_liked,
-    like_counts.counts AS likeCount,
-    threads.created_at AS createdAt,
-    comments.comments
+      threads.id AS postId,
+      users.nickname,
+      users.profile_image AS profileImage,
+      IF (
+        input_user_id = 0, false, IF (
+          threads.user_id = input_user_id, true, false
+        )
+      ) AS isMyPost,
+      threads.content,
+      is_liked_table.is_liked,
+      like_counts.counts AS likeCount,
+      threads.created_at AS createdAt,
+      comments.comments
     FROM threads
     LEFT JOIN users ON threads.user_id = users.id
     LEFT JOIN (
       SELECT
-      thread_comments.thread_id,
-      JSON_ARRAYAGG(
-        JSON_OBJECT(
-          "commentId", thread_comments.id,
-          "nickname", commenter.nickname,
-          "comment", thread_comments.content,
-          "createdAt", thread_comments.created_at,
-          "isMyReply", IF (commenter.id = input_user_id, true, false)
-        )
-      ) AS comments
+        thread_comments.thread_id,
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            "commentId", thread_comments.id,
+            "nickname", commenter.nickname,
+            "comment", thread_comments.content,
+            "createdAt", thread_comments.created_at,
+            "isMyReply", IF (commenter.id = input_user_id, true, false)
+          )
+        ) AS comments
       FROM thread_comments
       LEFT JOIN users commenter ON thread_comments.user_id = commenter.id
       GROUP BY thread_id
@@ -88,12 +92,19 @@ const createThread = async (tread) => {
 const getThreadById = async (threadId, reqUserId) => {
   const threads = await AppDataSource.query(`
   SELECT
-  threads.id AS postId,
-  users.nickname,
-  users.profile_image AS profileImage,
-  EXISTS (SELECT user_id FROM threads WHERE id = ${reqUserId}) AS isMyPost,
-  threads.content,
-  EXISTS (SELECT id FROM thread_like WHERE user_id = ${reqUserId} AND thread_id = ${threadId}) AS isLiked,
+    threads.id AS postId,
+    users.nickname,
+    users.profile_image AS profileImage,
+    EXISTS (
+      SELECT user_id 
+      FROM threads 
+      WHERE id = ${reqUserId}
+    ) AS isMyPost,
+    threads.content,
+    EXISTS (
+      SELECT id FROM thread_like 
+      WHERE user_id = ${reqUserId} AND thread_id = ${threadId}
+    ) AS isLiked,
   (SELECT COUNT(*) FROM thread_like WHERE thread_id = ${threadId}) AS likeCount,
   (
     SELECT
@@ -118,7 +129,7 @@ const getThreadById = async (threadId, reqUserId) => {
   return threads;
 };
 
-const updateTread = async (thread_id, content) => {
+const updateThread = async (thread_id, content) => {
   await myDataSource.query(`
     UPDATE posts 
     SET content = '${content}' 
@@ -126,7 +137,7 @@ const updateTread = async (thread_id, content) => {
   `);
 };
 
-const deleteTreads = async (thread_id) => {
+const deleteThreads = async (thread_id) => {
   await myDataSource.query(`
       DELETE FROM posts 
       WHERE id = '${thread_id}';
@@ -138,7 +149,7 @@ module.exports = {
   createThread,
   getThreadById,
   getAllThreads,
-  updateTread,
-  deleteTreads,
+  updateThread,
+  deleteThreads,
 };
 

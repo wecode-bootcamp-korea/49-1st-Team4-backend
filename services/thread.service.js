@@ -6,9 +6,10 @@ const getThreadById = async (threadId, reqUserId) => {
   if (!threadId) {
     throwError(400, "KEY_ERROR");
   }
-  if (!reqUserId) {
-    throwError(400, "KEY_ERROR");
-  }
+
+  // if (!reqUserId) {
+  //   throwError(400, "KEY_ERROR");
+  // }
 
   // query thread from db
   const threads = await threadDao.getThreadById(threadId, reqUserId);
@@ -17,20 +18,26 @@ const getThreadById = async (threadId, reqUserId) => {
     throwError(404, "CONTENT_NOT_FOUND");
   }
 
-  for (let i = 0; i < threads.length; i++) {
-    let thread = threads[i];
-    thread.isMyPost = thread.isMyPost == 1 ? true : false;
+  // for (let i = 0; i < threads.length; i++) {
+    let thread = threads[0];
+    thread.isMyPost = !!thread.isMyPost;
     thread.createdAt = new Date(thread.createdAt).toISOString();
     for (let j = 0; j < thread.comments.length; j++) {
       let comment = thread.comments[j];
-      comment.isMyReply = comment.isMyReply == 1 ? true : false;
+      comment.isMyReply = !!comment.isMyReply;
       comment.createdAt = new Date(comment.createdAt).toISOString();
     }
-  }
+
+    thread.comments.map((comment) => {
+      comment.isMyReply = !!comment.isMyReply;
+      comment.createdAt = new Date(comment.createdAt).toISOString();
+    })
+
+  // }
   return threads;
 };
 
-const getThreads = async (body) => {
+const getThreads = async () => {
   //DB 소스 변수를 가져오고
 
   const threads = await threadDao.getAllThreads();
@@ -51,6 +58,7 @@ const createThread = async (body) => {
     content: content,
   };
   await threadDao.createThread(newThread);
+  await threadDao.createThread({userId, content});
 };
 
 const updateThread = async (body) => {
@@ -64,16 +72,18 @@ const updateThread = async (body) => {
   if (thread.isMyPost) {
     throwError(400, "NO_PERMISSION_USER");
   }
-  await threadDao.updateTread(postId, content);
+  await threadDao.updateThread(postId, content);
 };
 
 const deleteThread = async (body) => {
   const { postId, userId } = body;
   const thread = threadDao.getThreadById(postId, userId);
+
   if (thread.length == 0) {
-    throwError(400, "NON_EXISTENT_THREAD");
+    throwError(404, "NON_EXISTENT_THREAD");
   }
-  await threadDao.deleteTreads(postId);
+  // error handling for trying to delete others' posting
+  await threadDao.deleteThreads(postId);
 };
 module.exports = {
   getThreadById,

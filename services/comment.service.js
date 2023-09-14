@@ -15,7 +15,7 @@ const createComment = async (body) => {
     throwError(401, "CONTENT_NOT_FOUND");
   }
 
-  commentDao.createComments(body);
+  await commentDao.createComments(body);
 };
 
 module.exports = {
