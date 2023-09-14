@@ -31,7 +31,7 @@ const getAllThreads = async (userId) => {
         )
       ) AS isMyPost,
       threads.content,
-      is_liked_table.is_liked,
+      is_liked_table.is_liked AS isLiked,
       like_counts.counts AS likeCount,
       threads.created_at AS createdAt,
       comments.comments

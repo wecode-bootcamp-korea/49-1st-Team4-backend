@@ -14,23 +14,34 @@ const getUserByEmail = async (email) => {
     SELECT email
     FROM users
     WHERE email = '${email}'
-    TOP 1;
+    LIMIT 1;
     `);
   return user;
 };
 
-const findUser = async (user_id) => {
+const findUser = async (userId) => {
   const user = await AppDataSource.query(`
     SELECT id
     FROM users
-    WHERE id = '${user_id}'
-    TOP 1;
+    WHERE id = '${userId}'
+    LIMIT 1;
   `);
   return user;
+};
+
+const getProfile = async (userId) => {
+  return await AppDataSource.query(`
+  SELECT
+    nickname,
+    profile_image AS profileImage
+  FROM users
+  WHERE id = ${userId}
+  LIMIT 1;`);
 };
 
 module.exports = {
   createUser,
   getUserByEmail,
   findUser,
+  getProfile,
 };

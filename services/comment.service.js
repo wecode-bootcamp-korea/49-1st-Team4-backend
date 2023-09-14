@@ -15,7 +15,7 @@ const createComment = async (userId, threadId, comment) => {
     throwError(401, "CONTENT_NOT_FOUND");
   }
 
-  commentDao.createComments(userId, threadId, comment);
+  await commentDao.createComments(userId, threadId, comment);
 };
 
 module.exports = {

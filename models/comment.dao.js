@@ -9,11 +9,9 @@ const checkThreadById = async (threadId) => {
 };
 
 const createComments = async (userId, threadId, comment) => {
-  const comment = await AppDataSource.query(
+  await AppDataSource.query(
     `INSERT INTO thread_comments (thread_id, user_id, content) VALUES ('${threadId}','${userId}','${comment}')`
   );
-
-  return comment;
 };
 
 const checkUserById = async (userId) => {
