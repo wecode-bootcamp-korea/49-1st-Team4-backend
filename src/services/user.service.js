@@ -16,8 +16,6 @@ const signIn = async (body) => {
   if (!user) {
     throwError(404, "EMAIL_DOES_NOT_EXIST");
   }
-
-  console.log(password, user);
   
   //INCORRECT_PASSWORD
   const check = await bcrypt.compare(password, user.password);

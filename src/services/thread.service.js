@@ -23,13 +23,10 @@ const getThreadById = async (threadId, reqUserId) => {
 };
 
 const getThreads = async (userId) => {
-  console.log("userId",userId);
   //DB 소스 변수를 가져오고
   const threads = await threadDao.getAllThreads(userId);
   
   threads.forEach(thread => {
-    console.log(thread);
-    console.log(thread.comments);
     convertToBoolean(thread);
   });
   //프론트에 전달
