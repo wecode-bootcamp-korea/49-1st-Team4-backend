@@ -1,4 +1,4 @@
-const likeService = require("../services/like.service");
+const { likeService } = require("../services");
 
 const createThreadLike = async (req, res) => {
   try {

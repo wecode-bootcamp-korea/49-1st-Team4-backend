@@ -1,4 +1,4 @@
-const { AppDataSource } = require("../models/data-source");
+const { AppDataSource } = require("./data-source");
 
 const getAllThreads = async (userId) => {
   // userId 인풋에 따라서 추가 쿼리문을 설정합니다.
@@ -31,7 +31,7 @@ const getAllThreads = async (userId) => {
         )
       ) AS isMyPost,
       threads.content,
-      is_liked_table.is_liked,
+      is_liked_table.is_liked AS isLiked,
       like_counts.counts AS likeCount,
       threads.created_at AS createdAt,
       comments.comments

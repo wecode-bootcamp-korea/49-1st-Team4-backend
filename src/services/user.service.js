@@ -16,6 +16,7 @@ const signIn = async (body) => {
   if (!user) {
     throwError(404, "EMAIL_DOES_NOT_EXIST");
   }
+  
   //INCORRECT_PASSWORD
   const check = await bcrypt.compare(password, user.password);
   if (!check) {
@@ -33,7 +34,7 @@ const signIn = async (body) => {
 const saltRounds = 10;
 
 const defaultProfileImage =
-  "https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Ffc7a0770-8294-4680-9cb3-c81efe407127%2Fb5f725e6-ab7c-44cc-ad87-1214e26017a9%2FUntitled.jpeg?table=block&id=9589c573-1bbb-48d7-a06b-a0502555d9cd&spaceId=fc7a0770-8294-4680-9cb3-c81efe407127&width=2000&userId=3389c2f0-8e40-4e50-a5a8-1876a4ee6b79&cache=v2";
+  "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg";
 
 const validateEmail = (email) => {
   const regExp =
@@ -95,7 +96,7 @@ const createUserDto = (
   }
   if (profileImage && profileImage !== "") {
     newUser["profile_image"] = profileImage;
-  } else if (profileImage === "") {
+  } else {
     newUser["profile_image"] = defaultProfileImage;
   }
   return newUser;
@@ -104,7 +105,7 @@ const createUserDto = (
 const signUp = async (body) => {
   const { email, password, nickname, phoneNumber, birthday, profileImage } =
     body;
-
+  
   checkEmptyValues(email, password, nickname);
 
   validateEmail(email);
@@ -126,15 +127,21 @@ const signUp = async (body) => {
   await userDao.createUser(newUser);
 };
 
-const findUser = async (user_id) => {
-  const user_list = await userDao.findUser(user_id);
+const findUser = async (userId) => {
+  const user_list = await userDao.findUser(userId);
   if (user_list.length == 0) {
     throwError(404, "USER_NOT_FOUND");
   }
+};
+
+const getProfile = async (userId) => {
+  const profile = await userDao.getProfile(userId);
+  return profile;
 };
 
 module.exports = {
   signUp,
   signIn,
   findUser,
+  getProfile,
 };
