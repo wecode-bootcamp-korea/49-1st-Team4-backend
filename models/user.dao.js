@@ -11,18 +11,20 @@ const createUser = async (user) => {
 
 const getUserByEmail = async (email) => {
   const [user] = await AppDataSource.query(`
-    SELECT *
+    SELECT email
     FROM users
-    WHERE email = '${email}';
+    WHERE email = '${email}'
+    TOP 1;
     `);
   return user;
 };
 
 const findUser = async (user_id) => {
   const user = await AppDataSource.query(`
-    SELECT *
+    SELECT id
     FROM users
-    WHERE id = '${user_id}';
+    WHERE id = '${user_id}'
+    TOP 1;
   `);
   return user;
 };
