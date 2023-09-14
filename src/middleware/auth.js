@@ -8,6 +8,7 @@ const validateToken = async (req, res, next) => {
   try {
     // GET에 토큰 없고, threadId 없을때 -> 그냥 next()
     const token = req.headers.authorization;
+    console.log("token", token);
     if ((req.method = "GET" && !token && !req.params.threadId)) {
       next();
     } else {
@@ -25,6 +26,7 @@ const validateToken = async (req, res, next) => {
         throwError(400, "INVALID_TOKEN");
       }
       await userService.findUser(userId);
+      console.log("userId", userId);
       req.userId = userId; // request 객체에 새로운 키값에 찾아진 유저의 정보를 할당하고
       next(); // next() 함수로 다음 미들웨어로 맥락(context)를 연결합니다.
     }
