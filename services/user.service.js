@@ -35,6 +35,8 @@ const signIn = async (body) => {
 
 const saltRounds = 10;
 
+const defaultProfileImage = "https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Ffc7a0770-8294-4680-9cb3-c81efe407127%2Fb5f725e6-ab7c-44cc-ad87-1214e26017a9%2FUntitled.jpeg?table=block&id=9589c573-1bbb-48d7-a06b-a0502555d9cd&spaceId=fc7a0770-8294-4680-9cb3-c81efe407127&width=2000&userId=3389c2f0-8e40-4e50-a5a8-1876a4ee6b79&cache=v2";
+
 const validateEmail = (email) => {
   const regExp =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -88,10 +90,12 @@ const createUserDto = (
     if (isNaN(birthdayDate.getTime())) {
       throwError(400, "INVALID_INPUT");
     }
-    newUser["birthday"] = birthday;
+    newUser["birthday"] = new Date(birthday).toISOString().slice(0, 19).replace('T', ' ');
   }
   if (profileImage && profileImage !== "") {
     newUser["profile_image"] = profileImage;
+  } else if (profileImage === "") {
+    newUser["profile_image"] = defaultProfileImage;
   }
   return newUser;
 };
@@ -116,8 +120,7 @@ const signUp = async (body) => {
     nickname,
     phoneNumber,
     birthday,
-    profileImage //아래 주소를 default로 저장하면 될 것 같습니다.
-    //https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Ffc7a0770-8294-4680-9cb3-c81efe407127%2Fb5f725e6-ab7c-44cc-ad87-1214e26017a9%2FUntitled.jpeg?table=block&id=9589c573-1bbb-48d7-a06b-a0502555d9cd&spaceId=fc7a0770-8294-4680-9cb3-c81efe407127&width=2000&userId=3389c2f0-8e40-4e50-a5a8-1876a4ee6b79&cache=v2
+    profileImage
   );
   await userDao.createUser(newUser);
 };
