@@ -9,7 +9,7 @@ const createThreadLike = async (threadId, userId) => {
   }
 
   if (!userId) {
-    throwError(401, "NOT_AUTHORIZED");
+    throwError(401, "UNAUTHORIZED");
   }
 
   // query thread from db
@@ -34,7 +34,7 @@ const deleteThreadLike = async (threadId, userId) => {
   }
 
   if (!userId) {
-    throwError(401, "NOT_AUTHORIZED");
+    throwError(401, "UNAUTHORIZED");
   }
 
   const threads = await threadDao.getThreadById(threadId, userId);
