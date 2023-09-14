@@ -11,7 +11,10 @@ const createUser = async (user) => {
 
 const getUserByEmail = async (email) => {
   const [user] = await AppDataSource.query(`
-    SELECT email
+    SELECT 
+      id,
+      email,
+      password
     FROM users
     WHERE email = '${email}'
     LIMIT 1;

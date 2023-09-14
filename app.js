@@ -7,9 +7,9 @@ const morgan = require("morgan");
 
 dotenv.config();
 
-const { AppDataSource } = require("./models/data-source");
+const { AppDataSource } = require("./src/models/data-source");
 
-const { routes } = require("./routes");
+const { routes } = require("./src/routes");
 
 const app = express();
 

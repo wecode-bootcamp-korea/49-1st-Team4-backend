@@ -1,4 +1,4 @@
-const { AppDataSource } = require("../models/data-source");
+const { AppDataSource } = require("./data-source");
 
 const getAllThreads = async (userId) => {
   // userId 인풋에 따라서 추가 쿼리문을 설정합니다.

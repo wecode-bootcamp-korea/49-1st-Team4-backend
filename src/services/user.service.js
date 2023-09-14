@@ -16,6 +16,9 @@ const signIn = async (body) => {
   if (!user) {
     throwError(404, "EMAIL_DOES_NOT_EXIST");
   }
+
+  console.log(password, user);
+  
   //INCORRECT_PASSWORD
   const check = await bcrypt.compare(password, user.password);
   if (!check) {
@@ -127,7 +130,9 @@ const signUp = async (body) => {
 };
 
 const findUser = async (userId) => {
+  console.log(userId);
   const user_list = await userDao.findUser(userId);
+  console.log(user_list);
   if (user_list.length == 0) {
     throwError(404, "USER_NOT_FOUND");
   }

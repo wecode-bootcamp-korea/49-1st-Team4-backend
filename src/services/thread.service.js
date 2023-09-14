@@ -23,9 +23,13 @@ const getThreadById = async (threadId, reqUserId) => {
 };
 
 const getThreads = async (userId) => {
+  console.log("userId",userId);
   //DB 소스 변수를 가져오고
   const threads = await threadDao.getAllThreads(userId);
+  
   threads.forEach(thread => {
+    console.log(thread);
+    console.log(thread.comments);
     convertToBoolean(thread);
   });
   //프론트에 전달
@@ -80,10 +84,12 @@ function convertToBoolean(thread) {
   thread.isMyPost = !!thread.isMyPost;
   thread.isLiked = !!thread.isLiked;
   thread.createdAt = new Date(thread.createdAt).toISOString();
-  for (let j = 0; j < thread.comments.length; j++) {
-    let comment = thread.comments[j];
-    comment.isMyReply = !!comment.isMyReply;
-    comment.createdAt = new Date(comment.createdAt).toISOString();
+  if (thread.comments) {
+    for (let j = 0; j < thread.comments.length; j++) {
+      let comment = thread.comments[j];
+      comment.isMyReply = !!comment.isMyReply;
+      comment.createdAt = new Date(comment.createdAt).toISOString();
+    }
   }
 }
 
