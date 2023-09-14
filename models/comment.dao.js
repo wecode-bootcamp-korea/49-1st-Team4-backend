@@ -1,24 +1,24 @@
 const { AppDataSource } = require("./data-source");
 
-const checkThreadById = async (id) => {
+const checkThreadById = async (threadId) => {
   const [thread] = await AppDataSource.query(
-    `SELECT * FROM threads WHERE id='${id}'`
+    `SELECT * FROM threads WHERE id='${threadId}'`
   );
 
   return thread;
 };
 
-const createComments = async (body) => {
+const createComments = async (userId, threadId, comment) => {
   const comment = await AppDataSource.query(
-    `INSERT INTO thread_comments (thread_id, user_id, content) VALUES ('${body.postId}','${body.userId}','${body.content}')`
+    `INSERT INTO thread_comments (thread_id, user_id, content) VALUES ('${threadId}','${userId}','${comment}')`
   );
 
   return comment;
 };
 
-const checkUserById = async (id) => {
+const checkUserById = async (userId) => {
   const [user] = await AppDataSource.query(
-    `SELECT * FROM users WHERE ID='${id}'`
+    `SELECT * FROM users WHERE ID='${userId}'`
   );
 
   return user;

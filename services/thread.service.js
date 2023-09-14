@@ -17,23 +17,17 @@ const getThreadById = async (threadId, reqUserId) => {
     throwError(404, "CONTENT_NOT_FOUND");
   }
 
-  for (let i = 0; i < threads.length; i++) {
-    let thread = threads[i];
-    thread.isMyPost = thread.isMyPost == 1 ? true : false;
-    thread.createdAt = new Date(thread.createdAt).toISOString();
-    for (let j = 0; j < thread.comments.length; j++) {
-      let comment = thread.comments[j];
-      comment.isMyReply = comment.isMyReply == 1 ? true : false;
-      comment.createdAt = new Date(comment.createdAt).toISOString();
-    }
-  }
+  const thread = threads[0];
+  convertToBoolean(thread);
   return threads;
 };
 
-const getThreads = async (body) => {
+const getThreads = async (userId) => {
   //DB 소스 변수를 가져오고
-
-  const threads = await threadDao.getAllThreads();
+  const threads = await threadDao.getAllThreads(userId);
+  threads.forEach(thread => {
+    convertToBoolean(thread);
+  });
   //프론트에 전달
   return threads;
 };
@@ -41,40 +35,58 @@ const getThreads = async (body) => {
 const createThread = async (body) => {
   const { userId, content } = body; //token 에서 값 알아와서 변수에 입력
   if (!userId) {
-    throwError(400,"LOGIN_ERROR")
+    throwError(400,"KEY_ERROR")
   }
   if (!content) {
-    throwError(400, "INPUT_CONTENT_EMPTY");
+    throwError(400, "KEY_ERROR");
   }
-  let newThread = {
-    userId: userId,
-    content: content,
-  };
-  await threadDao.createThread(newThread);
+  await threadDao.createThread({
+    userId,
+    content,
+  });
 };
 
 const updateThread = async (body) => {
-  const { userId, content, postId } = body;
+  const { userId, threadId, content } = body;
   //예외. content의 내용이 공란이 아니어야한다.
   if (!content) {
-    throwError(400, "CONTENT_EMPTY");
+    throwError(400, "KEY_ERROR");
   }
-  const thread = threadDao.getThreadById(postId, userId);
+  if (!threadId) {
+    throwError(400, "KEY_ERROR");
+  }
+  const thread = threadDao.getThreadById(threadId, userId);
   //예외. 본인이 작성한 스레드가 아니면 수정 불가능
   if (thread.isMyPost) {
-    throwError(400, "NO_PERMISSION_USER");
+    throwError(401, "UNAUTHORIZED");
   }
-  await threadDao.updateTread(postId, content);
+  await threadDao.updateThread(threadId, content);
 };
 
-const deleteThread = async (body) => {
-  const { postId, userId } = body;
-  const thread = threadDao.getThreadById(postId, userId);
+const deleteThread = async (userId, threadId) => {
+  // 내 스레드가 맞는지 확인
+
+  const thread = threadDao.getThreadById(threadId, userId);
   if (thread.length == 0) {
-    throwError(400, "NON_EXISTENT_THREAD");
+    throwError(404, "CONTENT_NOT_FOUND");
   }
-  await threadDao.deleteTreads(postId);
+  if (thread.userId !== userId) {
+    throwError(401, "UNAUTHORIZED");
+  }
+  await threadDao.deleteThread(threadId);
 };
+
+function convertToBoolean(thread) {
+  thread.isMyPost = !!thread.isMyPost;
+  thread.isLiked = !!thread.isLiked;
+  thread.createdAt = new Date(thread.createdAt).toISOString();
+  for (let j = 0; j < thread.comments.length; j++) {
+    let comment = thread.comments[j];
+    comment.isMyReply = !!comment.isMyReply;
+    comment.createdAt = new Date(comment.createdAt).toISOString();
+  }
+}
+
 module.exports = {
   getThreadById,
   getThreads,

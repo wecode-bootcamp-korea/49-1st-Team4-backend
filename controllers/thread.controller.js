@@ -2,8 +2,8 @@ const { threadService } = require("../services");
 
 const getThreadById = async (req, res) => {
   try {
-    const threadId = req.params.id;
-    const reqUserId = req.body.userId;
+    const { threadId } = req.params;
+    const { reqUserId } = req;
     const data = await threadService.getThreadById(threadId, reqUserId);
     res.status(200).json({ data: data });
   } catch (error) {
@@ -14,9 +14,9 @@ const getThreadById = async (req, res) => {
 
 const getThreads = async (req, res) => {
   try {
-    const thread = await threadService.getThreads(req.body);
+    const { userId } = req;
+    const thread = await threadService.getThreads(userId);
     res.status(200).json({
-      message: "threadCheck_success",
       data: thread,
     });
   } catch (error) {
@@ -27,8 +27,10 @@ const getThreads = async (req, res) => {
 
 const createThread = async (req, res) => {
   try {
-    await threadService.createThread(req.body);
-    res.status(200).json({ message: "threadPost_success" });
+    const { userId } = req;
+    const { content } = req.body;
+    await threadService.createThread({ userId, content });
+    res.status(201).json({ message: "THREAD_CREATED" });
   } catch (error) {
     console.log("error", error);
     res.status(error.status).json({ message: error.message });
@@ -37,17 +39,22 @@ const createThread = async (req, res) => {
 
 const updateThread = async (req, res) => {
   try {
-    await threadService.updateThread(req.body);
-    res.status(200).json({ message: "threadUpdate_success" });
+    const { userId } = req;
+    const { postId: threadId, content } = req.body;
+    await threadService.updateThread({ userId, threadId, content });
+    res.status(200).json({ message: "THREAD_UPDATED" });
   } catch (error) {
     console.log("error", error);
     res.status(error.status).json({ message: error.message });
   }
 };
+
 const deleteThread = async (req, res) => {
   try {
-    await threadService.deleteThread(req.body);
-    res.status(200).json({ message: "threadDelete_success" });
+    const { userId } = req;
+    const { postId: threadId } = req.body;
+    await threadService.deleteThread(userId, threadId);
+    res.status(204).json();
   } catch (error) {
     console.log("error", error);
     res.status(error.status).json({ message: error.message });

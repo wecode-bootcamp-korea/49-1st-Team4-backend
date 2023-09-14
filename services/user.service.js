@@ -14,11 +14,10 @@ const signIn = async (body) => {
 
   //email_does_not_exist
   if (!user) {
-    throwError(401, "EMAIL_DOES_NOT_EXIST");
+    throwError(404, "EMAIL_DOES_NOT_EXIST");
   }
   //INCORRECT_PASSWORD
   const check = await bcrypt.compare(password, user.password);
-  console.log(check);
   if (!check) {
     throwError(401, "INCORRECT_PASSWORD");
   }
@@ -27,15 +26,14 @@ const signIn = async (body) => {
     { id: user.id, email: user.email, iss: "wereads-team4" },
     process.env.SECRET
   );
-  const decoded = jwt.verify(token, process.env.SECRET);
-  console.log(decoded);
 
   return token;
 };
 
 const saltRounds = 10;
 
-const defaultProfileImage = "https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Ffc7a0770-8294-4680-9cb3-c81efe407127%2Fb5f725e6-ab7c-44cc-ad87-1214e26017a9%2FUntitled.jpeg?table=block&id=9589c573-1bbb-48d7-a06b-a0502555d9cd&spaceId=fc7a0770-8294-4680-9cb3-c81efe407127&width=2000&userId=3389c2f0-8e40-4e50-a5a8-1876a4ee6b79&cache=v2";
+const defaultProfileImage =
+  "https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Ffc7a0770-8294-4680-9cb3-c81efe407127%2Fb5f725e6-ab7c-44cc-ad87-1214e26017a9%2FUntitled.jpeg?table=block&id=9589c573-1bbb-48d7-a06b-a0502555d9cd&spaceId=fc7a0770-8294-4680-9cb3-c81efe407127&width=2000&userId=3389c2f0-8e40-4e50-a5a8-1876a4ee6b79&cache=v2";
 
 const validateEmail = (email) => {
   const regExp =
@@ -90,7 +88,10 @@ const createUserDto = (
     if (isNaN(birthdayDate.getTime())) {
       throwError(400, "INVALID_INPUT");
     }
-    newUser["birthday"] = new Date(birthday).toISOString().slice(0, 19).replace('T', ' ');
+    newUser["birthday"] = new Date(birthday)
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
   }
   if (profileImage && profileImage !== "") {
     newUser["profile_image"] = profileImage;
