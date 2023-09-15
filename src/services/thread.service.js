@@ -64,7 +64,7 @@ const updateThread = async (body) => {
   await threadDao.updateThread(threadId, content);
 };
 
-const deleteThread = async (userId, threadId) => {
+const deleteThread = async (threadId, userId) => {
   // 내 스레드가 맞는지 확인
 
   const thread = threadDao.getThreadById(threadId, userId);

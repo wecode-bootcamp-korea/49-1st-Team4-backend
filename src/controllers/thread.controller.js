@@ -53,8 +53,8 @@ const updateThread = async (req, res) => {
 const deleteThread = async (req, res) => {
   try {
     const { userId } = req;
-    const { postId: threadId } = req.body;
-    await threadService.deleteThread(userId, threadId);
+    const { threadId } = req.params;
+    await threadService.deleteThread(threadId, userId);
     res.status(204).json();
   } catch (error) {
     console.log("error", error);
