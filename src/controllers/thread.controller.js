@@ -40,7 +40,8 @@ const createThread = async (req, res) => {
 const updateThread = async (req, res) => {
   try {
     const { userId } = req;
-    const { postId: threadId, content } = req.body;
+    const { content } = req.body;
+    const { threadId } = req.params;
     await threadService.updateThread({ userId, threadId, content });
     res.status(200).json({ message: "THREAD_UPDATED" });
   } catch (error) {

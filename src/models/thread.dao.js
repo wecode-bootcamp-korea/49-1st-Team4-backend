@@ -145,16 +145,16 @@ const getThreadById = async (threadId, reqUserId) => {
 };
 
 const updateThread = async (threadId, content) => {
-  await myDataSource.query(`
-    UPDATE posts 
+  await AppDataSource.query(`
+    UPDATE threads 
     SET content = '${content}' 
     WHERE id = '${threadId}';
   `);
 };
 
 const deleteThread = async (threadId) => {
-  await myDataSource.query(`
-      DELETE FROM posts 
+  await AppDataSource.query(`
+      DELETE FROM threads 
       WHERE id = '${threadId}';
     `);
 };
