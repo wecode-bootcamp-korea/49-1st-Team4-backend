@@ -59,7 +59,7 @@ const updateThread = async (body) => {
   const thread = await threadDao.getThreadById(threadId, userId);
   //예외. 본인이 작성한 스레드가 아니면 수정 불가능
 
-  if (thread.isMyPost) {
+  if (!thread[0].isMyPost) {
     throwError(401, "UNAUTHORIZED");
   }
   await threadDao.updateThread(threadId, content);
