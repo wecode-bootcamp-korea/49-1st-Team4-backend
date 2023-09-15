@@ -9,7 +9,7 @@ const validateToken = async (req, res, next) => {
     // GET에 토큰 없고, threadId 없을때 -> 그냥 next()
     // const token = req.headers.Authorization;
     const token = req.get("authorization");
-    if ((req.method = "GET" && !token && !req.params.threadId)) {
+    if ((req.method == "GET" && !token && !req.params.threadId)) {
       next();
     } else {
       // method가 GET이 아닌 모든 것, token은 있을수도, 없을수도
