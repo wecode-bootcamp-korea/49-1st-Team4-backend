@@ -98,15 +98,16 @@ const createThread = async (tread) => {
 };
 
 const getThreadById = async (threadId, reqUserId) => {
+  console.log(threadId, reqUserId);
   const threads = await AppDataSource.query(`
   SELECT
   threads.id AS postId,
   users.nickname,
   users.profile_image AS profileImage,
   EXISTS (
-    SELECT user_id 
+    SELECT id
     FROM threads 
-    WHERE id = ${reqUserId}
+    WHERE user_id = ${reqUserId}
   ) AS isMyPost,
   threads.content,
   EXISTS (

@@ -56,8 +56,9 @@ const updateThread = async (body) => {
   if (!threadId) {
     throwError(400, "KEY_ERROR");
   }
-  const thread = threadDao.getThreadById(threadId, userId);
+  const thread = await threadDao.getThreadById(threadId, userId);
   //예외. 본인이 작성한 스레드가 아니면 수정 불가능
+
   if (thread.isMyPost) {
     throwError(401, "UNAUTHORIZED");
   }
@@ -67,11 +68,11 @@ const updateThread = async (body) => {
 const deleteThread = async (threadId, userId) => {
   // 내 스레드가 맞는지 확인
 
-  const thread = threadDao.getThreadById(threadId, userId);
+  const thread = await threadDao.getThreadById(threadId, userId);
   if (thread.length == 0) {
     throwError(404, "CONTENT_NOT_FOUND");
   }
-  if (thread.userId !== userId) {
+  if (!thread[0].isMyPost) {
     throwError(401, "UNAUTHORIZED");
   }
   await threadDao.deleteThread(threadId);
