@@ -37,8 +37,8 @@ CREATE TABLE `thread_comments` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `thread_id` (`thread_id`),
-  CONSTRAINT `thread_comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `thread_comments_ibfk_2` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`id`)
+  CONSTRAINT `thread_comments_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `thread_comments_ibfk_4` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -56,8 +56,8 @@ CREATE TABLE `thread_like` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `thread_id` (`thread_id`),
-  CONSTRAINT `thread_like_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `thread_like_ibfk_2` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`id`)
+  CONSTRAINT `thread_like_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `thread_like_ibfk_4` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -75,7 +75,7 @@ CREATE TABLE `threads` (
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `threads_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `threads_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -123,5 +123,6 @@ INSERT INTO `schema_migrations` (version) VALUES
   ('20230911052808'),
   ('20230911053025'),
   ('20230911053038'),
-  ('20230911053049');
+  ('20230911053049'),
+  ('20230915030612');
 UNLOCK TABLES;
