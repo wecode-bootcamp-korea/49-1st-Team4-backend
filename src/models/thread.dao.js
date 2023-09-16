@@ -1,3 +1,4 @@
+const { convertThreadDataToBoolean } = require("../utils/convertToBoolean");
 const { AppDataSource } = require("./data-source");
 
 const getAllThreads = async (userId) => {
@@ -81,6 +82,9 @@ const getAllThreads = async (userId) => {
   `);
   // queryResult = [(data), (header)]
   const threads = queryResult[0];
+  threads.forEach(thread => {
+    convertThreadDataToBoolean(thread);
+  });
   return threads;
 };
 
@@ -141,6 +145,7 @@ const getThreadById = async (threadId, reqUserId) => {
   LEFT JOIN users ON threads.user_id = users.id
   WHERE threads.id = ${threadId};
   `);
+  convertThreadDataToBoolean(threads[0]);
   return threads;
 };
 
