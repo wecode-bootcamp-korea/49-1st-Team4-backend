@@ -17,18 +17,12 @@ const getThreadById = async (threadId, reqUserId) => {
     throwError(404, "CONTENT_NOT_FOUND");
   }
 
-  const thread = threads[0];
-  convertToBoolean(thread);
   return threads;
 };
 
 const getThreads = async (userId) => {
   //DB 소스 변수를 가져오고
   const threads = await threadDao.getAllThreads(userId);
-  
-  threads.forEach(thread => {
-    convertToBoolean(thread);
-  });
   //프론트에 전달
   return threads;
 };
@@ -77,19 +71,6 @@ const deleteThread = async (threadId, userId) => {
   }
   await threadDao.deleteThread(threadId);
 };
-
-function convertToBoolean(thread) {
-  thread.isMyPost = !!thread.isMyPost;
-  thread.isLiked = !!thread.isLiked;
-  thread.createdAt = new Date(thread.createdAt).toISOString();
-  if (thread.comments) {
-    for (let j = 0; j < thread.comments.length; j++) {
-      let comment = thread.comments[j];
-      comment.isMyReply = !!comment.isMyReply;
-      comment.createdAt = new Date(comment.createdAt).toISOString();
-    }
-  }
-}
 
 module.exports = {
   getThreadById,

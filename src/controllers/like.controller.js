@@ -2,8 +2,9 @@ const { likeService } = require("../services");
 
 const createThreadLike = async (req, res) => {
   try {
-    const { postId: threadId } = req.body;
+    const { threadId } = req.params;
     const { userId } = req;
+
     await likeService.createThreadLike(threadId, userId);
     res.status(201).json({ message: "THREAD_LIKE_CREATED" });
   } catch (error) {
